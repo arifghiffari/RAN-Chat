@@ -4,6 +4,9 @@ const PORT = 3000 || process.env.PORT
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const authentication = require("./middlewares/authentication");
+const UserController = require("./Controllers/UserController");
+const ChatController = require("./Controllers/ChatController");
+const errorHandler = require("./middlewares/errorHandler");
 
 const server = createServer(app);
 const io = new Server(server, {
@@ -12,12 +15,15 @@ const io = new Server(server, {
     }
 });
 
-app.post('/register', UserController.register)
-app.post('/login', UserController.login)
+app.use(express.urlencoded({extended: true}))
+app.use(express.json())
+
+app.post('/register', UserController.registerUser)
+app.post('/login', UserController.loginUser)
 
 app.use(authentication)
 
-app.get('/', ChatController)
+app.get('/', ChatController.viewHome)
 
 const botName = "RAN Chat Bot"
 
@@ -72,6 +78,8 @@ io.on("connection", (socket) => {
         }
     });
 });
+
+app.use(errorHandler)
 
 server.listen(PORT, () => {
     console.log(`Running on http://localhost:${PORT}`)
