@@ -1,6 +1,6 @@
-const { User } = require('../models/index');
-const { comparePassword, hash } = require('../helpers/bcrypt');
-const { token } = require('../helpers/jwt');
+const { User } = require('../models');
+const { comparePassword, hashPassword } = require('../helpers/bcrypt');
+const { signToken } = require('../helpers/jwt');
 
 class UserController {
     static async registerUser(req, res, next) {
@@ -16,7 +16,7 @@ class UserController {
                 throw { name: 'Bad Request', message: 'Invalid phase provided' };
             }
             
-            const hashedPassword = await hash(password); // Hash the password before storing
+            const hashedPassword = await hashPassword(password); // Hash the password before storing
             
             await User.create({ name, email, password: hashedPassword, phase });
             res.status(201).json({
@@ -33,10 +33,12 @@ class UserController {
         try {
             const { email, password } = req.body;
             
+            // console.log(req.body, `data req body`);
+
             const user = await User.findOne({ where: { email } }); // Correct model is 'User'
             
             if (user && comparePassword(password, user.password)) {
-                const accessToken = token({ id: user.id, email: user.email });
+                const accessToken = signToken({ id: user.id, email: user.email });
 
                 console.log(accessToken, "<<<<<<<<");
                 res.status(200).json({ accessToken });

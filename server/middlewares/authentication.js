@@ -1,38 +1,36 @@
-const { verifyToken } = require('../helpers/jwt')
-const { User } = require('../models')
+const { verifyToken } = require("../helpers/jwt");
+const { Author } = require("../models/index");
+// const jwt = require('jsonwebtoken');
 
-const authentication = async (req, res, next) => {
+async function authentication(req, res, next) {
     try {
-        const { authorization } = req.headers
-        // console.log(authorization);
-        
-        if(!authorization) throw { name: "Unauthorized"}
+        const { authorization } = req.headers;
 
-        const access_token = authorization.split(' ')[1]
-        // console.log(access_token);
+        if (!authorization) throw { name: "Unauthorized" };
 
-        // di check tokennya sudah benar atau engga
-        // 
-        const payload = verifyToken(access_token)
-        // console.log(payload, `>>> payload di auth`)
+        const access_token = authorization.split(" ")[1];
 
-        const user = await User.findByPk(payload.id)
-        // console.log(user, `>>> user di auth`);
+        const payload = verifyToken(access_token);
 
-        if(!user) throw { name: "Unauthorized"}
+        const user = await Author.findOne({
+            where: {
+                email: payload.email
+            }
+        });
+
+        if (!user) throw { name: "Unauthorized" };
 
         req.loginInfo = {
-            userId : user.id,
-            email: user.email,
-            role: user.role
-        }
+            authorId: user.id,
+            phase :user.phase
+        };
 
-        next()
-
-    } catch (err) {
-        console.log(err);
-        next(err)
+        next();
+    } catch (error) {
+        console.log(error);
+        next(error);
     }
 }
 
-module.exports = authentication
+module.exports = authentication;
+
