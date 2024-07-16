@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Admin",
+        "email": "admin@mail.com",
+        "password": "Admin#1234",
+        "phase": "Admin"
+    },
+    {
+        "name": "User-1",
+        "email": "user1@mail.com",
+        "password": "User#1234",
+        "phase": "Phase 0"
+    }
+]
