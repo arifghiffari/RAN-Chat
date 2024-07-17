@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import url from "../utils/url";
 
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +13,8 @@ export default function Login() {
     e.preventDefault();
     try {
       let { data } = await axios.post(`${url}/login`, { email, password });
-      //   console.log(data);
+      // let { data2 } = await axios.get(`${url}/`)
+      console.log(data);
       localStorage.setItem("token", data.accessToken);
 
       navigate("/");
@@ -20,6 +22,7 @@ export default function Login() {
       console.log(error.response.data.message);
     }
   }
+
   return (
     <>
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">

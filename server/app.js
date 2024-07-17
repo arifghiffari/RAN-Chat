@@ -33,53 +33,49 @@ const botName = "RAN Chat"
 
 // Run when client connects
 io.on('connection', (socket) => {
+    console.log('New connection')
 
-    console.log('a user connected', socket.id, "<<<< id");
-    console.log('a user connected', socket.handshake.auth.username, "<<<< username");
-    socket.emit("welcome", "Hello Mr/Mrs " + socket.id) // emit ke client yg lagi connect
+    // Set auth for socket
+    socket.auth = socket.handshake.auth;
 
     // Join room
-    socket.on("joinRoom", ({ email, room }) => {
-        const user = userJoin(socket.id, email, room);
-        console.log(user);
-        socket.join(user.room);
-        // Welcome current user
-        socket.emit("message", formatMessage(botName, "Welcome to ChatCord!"));
+    socket.join(socket.auth.room);
 
-        // Broadcast when a user connects
-        socket.broadcast.to(user.room).emit(
-            "message",
-            formatMessage(botName, ` ${user.username} has joined the chat`)
-        );
+    // Welcome current user
+    socket.emit("welcome", `Hello Mr/Mrs ${socket.auth.username}`);
 
-        // Send users and room info
-        io.to(user.room).emit("roomUsers", {
-            room: user.room,
-            users: getRoomUsers(user.room),
-        });
+    // Broadcast when a user connects
+    socket.broadcast.to(socket.auth.room).emit(
+        "message",
+        formatMessage(botName, ` ${socket.auth.username} has joined the chat`)
+    );
+
+    // Send users and room info
+    io.to(socket.auth.room).emit("roomUsers", {
+        room: socket.auth.room,
+        users: getRoomUsers(socket.auth.room),
     });
 
     // Listen for chatMessage
-    socket.on("chatMessage", (msg) => {
-        const user = getCurrentUser(socket.id);
-        io.to(user.room).emit("message", formatMessage(user.username, msg));
+    socket.on("message:new", (message) => {
+        io.to(socket.auth.room).emit("message:update", {
+            from: socket.auth.username,
+            message
+        })
     });
 
     // Runs when client disconnects
     socket.on("disconnect", () => {
-        const user = userLeave(socket.id);
-        if (user) {
-            io.to(user.room).emit(
-                "message",
-                formatMessage(`botName, ${user.name} has left the chat`)
-            );
+        io.to(socket.auth.room).emit(
+            "message",
+            formatMessage(botName, ` ${socket.auth.username} has left the chat`)
+        );
 
-            // Send users and room info
-            io.to(user.room).emit("roomUsers", {
-                room: user.room,
-                users: getRoomUsers(user.room),
-            });
-        }
+        // Send users and room info
+        io.to(socket.auth.room).emit("roomUsers", {
+            room: socket.auth.room,
+            users: getRoomUsers(socket.auth.room),
+        });
     });
 });
 
