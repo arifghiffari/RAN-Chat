@@ -1,31 +1,30 @@
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import url from "../utils/url";
-
+import { ThemeContext } from '../context/ThemeContext';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-
+  
   async function handleLogin(e) {
     e.preventDefault();
     try {
       let { data } = await axios.post(`${url}/login`, { email, password });
-      // let { data2 } = await axios.get(`${url}/`)
-      console.log(data);
       localStorage.setItem("token", data.accessToken);
-
       navigate("/");
     } catch (error) {
       console.log(error.response.data.message);
     }
   }
 
+  const { currentTheme, theme } = useContext(ThemeContext);
+  
   return (
     <>
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" data-theme={theme[currentTheme].dataTheme}>
         <div className="hero bg-base-200">
           <div className="hero-content flex-col lg:flex-row-reverse">
             <div className="text-center lg:text-left">
@@ -38,7 +37,7 @@ export default function Login() {
             </div>
             <div className="card w-full max-w-sm shadow-2xl bg-base-100">
               <div className="card-body">
-                <form action="chat.html" className="w-full">
+                <form className="w-full">
                   <div className="form-control">
                     <label htmlFor="Email" className="label">
                       <span className="label-text">Email</span>
