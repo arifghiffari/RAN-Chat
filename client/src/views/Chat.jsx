@@ -6,6 +6,8 @@ export default function ChatPage({ socket }) {
   const [messages, setMessages] = useState([]);
   const user = getUserFromToken();
 
+  const botName = "RAN Chat Bot"
+
   useEffect(() => {
     // ngeset auth buat socketnya
     socket.auth = {
@@ -18,11 +20,15 @@ export default function ChatPage({ socket }) {
     socket.connect();
 
     socket.on("welcome", (message) => {
-      console.log(message);
+      setMessages((current) => {
+        return [...current, { from: botName, message }];
+      });
     });
 
     socket.on("message", (message) => {
-      console.log(message);
+      setMessages((current) => {
+        return [...current, { from: botName, message }];
+      });
     });
 
     socket.on("message:update", (newMessage) => {
