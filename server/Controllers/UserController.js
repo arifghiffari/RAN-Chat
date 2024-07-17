@@ -36,10 +36,14 @@ class UserController {
 
             const user = await User.findOne({ where: { email } }); // Correct model is 'User'
 
-            if (user && comparePassword(password, user.password)) {
-                const accessToken = signToken({ id: user.id, email: user.email });
+            // const { name, phase } = req.loginInfo
 
-                console.log(accessToken, "<<<<<<<<");
+            console.log(user);
+
+            if (user && comparePassword(password, user.password)) {
+                const accessToken = signToken({ id: user.id, name: user.name, email: user.email, phase: user.phase });
+
+                // console.log(accessToken, "<<<<<<<<");
                 res.status(200).json({ accessToken });
             } else {
                 throw { name: "Login Error", message: "Invalid email or password" };

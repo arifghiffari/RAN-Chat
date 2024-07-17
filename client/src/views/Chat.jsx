@@ -1,24 +1,29 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from 'react';
+import getUserFromToken from '../utils/auth';
 
 export default function ChatPage({ socket }) {
   const [messageSent, setMessageSent] = useState("");
   const [messages, setMessages] = useState([]);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    socket.emit("message:new", messageSent);
-    // console.log(messageSents);
-  }
+  const user = getUserFromToken();
 
   useEffect(() => {
     // ngeset auth buat socketnya
     socket.auth = {
-      username: localStorage.token,
+      username: user.name,
+      room: user.phase
     };
+    // console.log(socket.auth);
 
     // kenapa butuh connect manual? supaya bisa set auth dlu sblm connect
     socket.connect();
+
+    socket.on("welcome", (message) => {
+      console.log(message);
+    });
+
+    socket.on("message", (message) => {
+      console.log(message);
+    });
 
     socket.on("message:update", (newMessage) => {
       setMessages((current) => {
@@ -26,12 +31,22 @@ export default function ChatPage({ socket }) {
       });
     });
 
+    socket.on("roomUsers", (roomUsers) => {
+      console.log(roomUsers);
+    });
+
     return () => {
       socket.off("message:update");
+      socket.off("roomUsers");
       socket.disconnect();
     };
   }, []);
-  console.log(messages);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    socket.emit("message:new", messageSent);
+    setMessageSent("");
+  }
 
   return (
     <>
@@ -41,8 +56,8 @@ export default function ChatPage({ socket }) {
             {messages.map((msg) => {
               return (
                 <>
-                  <div className={msg.from == localStorage.token ? "chat chat-start flex flex-col" : "chat chat-end flex flex-col"}>
-                    <div>{msg.from == localStorage.token ? "You" : msg.from}</div>
+                  <div className={msg.from == user.name ? "chat chat-start flex flex-col" : "chat chat-end flex flex-col"}>
+                    <div>{msg.from == user.name ? "You" : msg.from}</div>
                     <div className="chat-bubble chat-bubble-accent">{msg.message}</div>
                   </div>
                 </>
