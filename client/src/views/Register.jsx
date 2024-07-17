@@ -36,84 +36,61 @@ export default function Register() {
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-200">
-      <header className="p-5">
-        <center>
-          <h1 className="text-3xl font-bold">
-            <i className="fas fa-smile"></i> RAN CHAT
-          </h1>
-          <h2 className="text-3xl font-bold">Register</h2>
-        </center>
-      </header>
-      <main className="flex flex-col items-center w-full max-w-md p-5 bg-white rounded shadow-md">
-        <form action="chat.html" className="w-full">
-          <div className="mb-4">
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-              Username
-            </label>
-            <input
-              onChange={(e) => setName(e.target.value)}
-              type="text"
-              name="username"
-              id="username"
-              placeholder="Enter username..."
-              required
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="hero bg-base-200">
+        <div className="hero-content flex-col lg:flex-row-reverse">
+          <div className="text-center lg:text-left">
+            <h1 className="text-5xl font-bold">
+              <i className="fas fa-smile"></i> RAN CHAT
+            </h1>
+            <p className="py-6">Register to join the chat and connect with your friends!</p>
           </div>
-          <div className="mb-4">
-            <label htmlFor="Email" className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              name="Email"
-              id="Email"
-              placeholder="Enter Email..."
-              required
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
+          <div className="card w-full max-w-sm shadow-2xl bg-base-100">
+            <div className="card-body">
+              <h2 className="text-center text-3xl font-bold mb-6">Register</h2>
+              <form action="chat.html" className="w-full">
+                <div className="form-control mb-4">
+                  <label htmlFor="username" className="label">
+                    <span className="label-text">Username</span>
+                  </label>
+                  <input onChange={(e) => setName(e.target.value)} type="text" name="username" id="username" placeholder="Enter username..." required className="input input-bordered" />
+                </div>
+                <div className="form-control mb-4">
+                  <label htmlFor="Email" className="label">
+                    <span className="label-text">Email</span>
+                  </label>
+                  <input onChange={(e) => setEmail(e.target.value)} type="email" name="Email" id="Email" placeholder="Enter Email..." required className="input input-bordered" />
+                </div>
+                <div className="form-control mb-4">
+                  <label htmlFor="Password" className="label">
+                    <span className="label-text">Password</span>
+                  </label>
+                  <input onChange={(e) => setPassword(e.target.value)} type="password" name="Password" id="Password" placeholder="Enter Password..." required className="input input-bordered" />
+                </div>
+                <div className="form-control mb-4">
+                  <label htmlFor="phase" className="label">
+                    <span className="label-text">Phase</span>
+                  </label>
+                  <input onChange={(e) => setPhase(e.target.value)} type="text" name="phase" id="phase" placeholder="Enter phase..." required className="input input-bordered" />
+                </div>
+                <div className="form-control mt-6">
+                  <button onClick={handleRegister} type="submit" className="btn btn-secondary w-full">
+                    Sign Up
+                  </button>
+                </div>
+                <div className="mt-4 text-center">
+                  <p>
+                    Already have an account?{" "}
+                    <Link to="/login" className="link link-primary">
+                      Login
+                    </Link>
+                  </p>
+                </div>
+              </form>
+            </div>
           </div>
-          <div className="mb-4">
-            <label htmlFor="Password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              onChange={(e) => setPassword(e.target.value)}
-              type="password"
-              name="Password"
-              id="Password"
-              placeholder="Enter Password..."
-              required
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="room" className="block text-sm font-medium text-gray-700">
-              Phase
-            </label>
-            <input
-              onChange={(e) => setPhase(e.target.value)}
-              type="text"
-              name="username"
-              id="username"
-              placeholder="Enter username..."
-              required
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            />
-          </div>
-          <button
-            onClick={handleRegister}
-            type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Sign Up
-          </button>
-          <br />
-          <Link to="/login">Login</Link>
-        </form>
-      </main>
+        </div>
+      </div>
     </div>
   );
 }
