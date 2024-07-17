@@ -1,14 +1,9 @@
+import Nav from "../components/Nav";
+
 export default function Chat() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
-      <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold">
-          <i className="fas fa-smile"></i> RAN CHAT
-        </h1>
-        <a href="index.html" className="bg-red-500 px-3 py-2 rounded text-white hover:bg-red-600">
-          Leave Room
-        </a>
-      </nav>
+      <Nav />
       <main className="flex flex-1">
         <aside className="w-1/4 bg-white p-4">
           <h3 className="text-lg font-semibold flex items-center">
