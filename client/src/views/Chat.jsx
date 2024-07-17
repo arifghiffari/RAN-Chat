@@ -1,51 +1,62 @@
-import Nav from "../components/Nav";
+import { useState } from "react";
+import { useEffect } from "react";
 
-export default function Chat() {
+export default function ChatPage({ socket }) {
+  const [messageSent, setMessageSent] = useState("");
+  const [messages, setMessages] = useState([]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    socket.emit("message:new", messageSent);
+    // console.log(messageSents);
+  }
+
+  useEffect(() => {
+    // ngeset auth buat socketnya
+    socket.auth = {
+      username: localStorage.token,
+    };
+
+    // kenapa butuh connect manual? supaya bisa set auth dlu sblm connect
+    socket.connect();
+
+    socket.on("message:update", (newMessage) => {
+      setMessages((current) => {
+        return [...current, newMessage];
+      });
+    });
+
+    return () => {
+      socket.off("message:update");
+      socket.disconnect();
+    };
+  }, []);
+  console.log(messages);
+
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
-      <Nav />
-      <main className="flex flex-1">
-        <aside className="w-1/4 bg-white p-4">
-          <h3 className="text-lg font-semibold flex items-center">
-            <i className="fas fa-comments mr-2"></i> Room Name:
-          </h3>
-          <h2 id="room-name" className="text-xl font-bold mb-4">
-            JavaScript
-          </h2>
-          <h3 className="text-lg font-semibold flex items-center">
-            <i className="fas fa-users mr-2"></i> Users
-          </h3>
-          <ul id="users" className="list-disc list-inside">
-            <li>Brad</li>
-            <li>John</li>
-            <li>Mary</li>
-            <li>Paul</li>
-            <li>Mike</li>
-          </ul>
-        </aside>
-        <div className="flex-1 bg-white p-4 overflow-y-auto">
-          <div className="message bg-gray-100 p-2 rounded mb-4">
-            <p className="meta text-sm text-gray-500">
-              Brad <span className="ml-2">9:12pm</span>
-            </p>
-            <p className="text mt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, repudiandae.</p>
+    <>
+      <div className="flex flex-col items-center justify-center w-screen min-h-screen bg-base-200 text-gray-800 p-10">
+        <div className="flex flex-col flex-grow w-full max-w-xl bg-base-100 shadow-xl rounded-lg overflow-hidden">
+          <div className="flex flex-col flex-grow h-0 p-4 overflow-auto">
+            {messages.map((msg) => {
+              return (
+                <>
+                  <div className={msg.from == localStorage.token ? "chat chat-start flex flex-col" : "chat chat-end flex flex-col"}>
+                    <div>{msg.from == localStorage.token ? "You" : msg.from}</div>
+                    <div className="chat-bubble chat-bubble-accent">{msg.message}</div>
+                  </div>
+                </>
+              );
+            })}
           </div>
-          <div className="message bg-gray-100 p-2 rounded mb-4">
-            <p className="meta text-sm text-gray-500">
-              Mary <span className="ml-2">9:15pm</span>
-            </p>
-            <p className="text mt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi, repudiandae.</p>
-          </div>
+          <form className="bg-accent p-4 flex flex-row" onSubmit={handleSubmit}>
+            <input onChange={(e) => setMessageSent(e.target.value)} className="flex items-center w-full rounded px-3" type="text" placeholder="Type your message…" />
+            <button className="btn btn-base-100 ml-4" type="submit">
+              Send
+            </button>
+          </form>
         </div>
-      </main>
-      <div className="bg-white p-4">
-        <form id="chat-form" className="flex">
-          <input id="msg" type="text" placeholder="Enter Message" required autoComplete="off" className="flex-1 border border-gray-300 p-2 rounded-l" />
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600">
-            <i className="fas fa-paper-plane"></i> Send
-          </button>
-        </form>
       </div>
-    </div>
+    </>
   );
 }
