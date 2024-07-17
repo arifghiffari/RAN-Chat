@@ -7,6 +7,15 @@ const errorHandler = (err, req, res, next) => {
         message = err.errors[0].message
     }
 
+    if (err.name == 'Bad Request Body') {
+        status = 400
+        message = 'Please input your Name, E-mail, Password, and Phase'
+    }
+
+    if (err.name == 'Bad Request Phase') {
+        status = 400
+        message = 'Invalid phase provided'
+    }
     if (err.name == 'SequelizeUniqueConstraintError') {
         status = 400
         message = err.errors[0].message

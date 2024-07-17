@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express()
 const PORT = 3000 || process.env.PORT
+const cors = require('cors')
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const authentication = require("./middlewares/authentication");
@@ -15,8 +16,9 @@ const io = new Server(server, {
     }
 });
 
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(cors())
 
 app.post('/register', UserController.registerUser)
 app.post('/login', UserController.loginUser)
