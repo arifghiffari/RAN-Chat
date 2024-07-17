@@ -1,6 +1,5 @@
 const { verifyToken } = require("../helpers/jwt");
-const { Author } = require("../models/index");
-// const jwt = require('jsonwebtoken');
+const { User } = require("../models/index");
 
 async function authentication(req, res, next) {
     try {
@@ -12,19 +11,24 @@ async function authentication(req, res, next) {
 
         const payload = verifyToken(access_token);
 
-        const user = await Author.findOne({
+        // console.log(payload);
+
+        const user = await User.findOne({
             where: {
                 email: payload.email
             }
         });
 
+
         if (!user) throw { name: "Unauthorized" };
 
         req.loginInfo = {
-            authorId: user.id,
-            phase :user.phase
+            UserId: user.id,
+            name: user.name,
+            phase: user.phase
         };
 
+        // console.log(req.loginInfo, data loginInfo di authentication);
         next();
     } catch (error) {
         console.log(error);
@@ -33,4 +37,3 @@ async function authentication(req, res, next) {
 }
 
 module.exports = authentication;
-
