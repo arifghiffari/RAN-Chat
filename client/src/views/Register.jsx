@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import url from "../utils/url";
 import Toastify from "toastify-js";
+import { ThemeContext } from '../context/ThemeContext';
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -10,33 +11,33 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [phase, setPhase] = useState("");
   const navigate = useNavigate();
+
   async function handleRegister(e) {
     e.preventDefault();
     try {
       let { data } = await axios.post(`${url}/register`, { name, email, password, phase });
       console.log(data);
-
       navigate("/login");
     } catch (error) {
-      //   console.log(error.response.data.message);
       Toastify({
         text: error.response.data.message,
         duration: 3000,
         newWindow: true,
         close: true,
-        gravity: "bottom", // `top` or `bottom`
-        position: "right", // `left`, `center` or `right`
-        stopOnFocus: true, // Prevents dismissing of toast on hover
+        gravity: "bottom", 
+        position: "right", 
+        stopOnFocus: true,
         style: {
           background: "linear-gradient(to right, #FF0000, #FF7637)",
         },
-        onClick: function () {}, // Callback after click
       }).showToast();
     }
   }
 
+  const { currentTheme, theme } = useContext(ThemeContext);
+
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center" data-theme={theme[currentTheme].dataTheme}>
       <div className="hero bg-base-200">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div className="text-center lg:text-left">
@@ -48,7 +49,7 @@ export default function Register() {
           <div className="card w-full max-w-sm shadow-2xl bg-base-100">
             <div className="card-body">
               <h2 className="text-center text-3xl font-bold mb-6">Register</h2>
-              <form action="chat.html" className="w-full">
+              <form className="w-full">
                 <div className="form-control mb-4">
                   <label htmlFor="username" className="label">
                     <span className="label-text">Username</span>
@@ -94,3 +95,4 @@ export default function Register() {
     </div>
   );
 }
+
