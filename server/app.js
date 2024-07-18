@@ -47,7 +47,7 @@ io.on('connection', (socket) => {
     // Broadcast when a user connects
     socket.broadcast.to(socket.auth.room).emit(
         "message",
-        formatMessage(botName, ` ${socket.auth.username} has joined the chat`)
+        formatMessage(`${socket.auth.username} has joined the chat`)
     );
 
     // Send users and room info
@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
     socket.on("disconnect", () => {
         io.to(socket.auth.room).emit(
             "message",
-            formatMessage(botName, ` ${socket.auth.username} has left the chat`)
+            formatMessage(`${socket.auth.username} has left the chat`)
         );
 
         // Send users and room info

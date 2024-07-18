@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import getUserFromToken from '../utils/auth';
 
 export default function ChatPage({ socket }) {
   const [messageSent, setMessageSent] = useState("");
   const [messages, setMessages] = useState([]);
   const user = getUserFromToken();
+  // const inputRef = useRef(null); // add a ref to the input field
 
   const botName = "RAN Chat Bot"
 
@@ -27,7 +28,7 @@ export default function ChatPage({ socket }) {
 
     socket.on("message", (message) => {
       setMessages((current) => {
-        return [...current, { from: botName, message }];
+        return [...current, { message }];
       });
     });
 
@@ -42,6 +43,8 @@ export default function ChatPage({ socket }) {
     });
 
     return () => {
+      socket.off("welcome")
+      socket.off("message")
       socket.off("message:update");
       socket.off("roomUsers");
       socket.disconnect();
@@ -50,8 +53,11 @@ export default function ChatPage({ socket }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    socket.emit("message:new", messageSent);
-    setMessageSent("");
+    const message = messageSent.trim(); // get the current value of the input field
+    if (message) {
+      socket.emit("message:new", message);
+      setMessageSent(""); // clear the input field
+    }
   }
 
   return (
