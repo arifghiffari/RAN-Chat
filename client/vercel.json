@@ -1,3 +1,3 @@
 {
-  "rewrites": [{ "source": "/login", "destination": "https://ran-chat-nine.vercel.app/login" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "https://ran-chat-git-dev-arifs-projects-4e69b685.vercel.app/login" }]
 }
