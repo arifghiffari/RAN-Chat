@@ -5,7 +5,7 @@ import Register from "../views/Register";
 import BaseLayout from "../views/BaseLayout";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3000", {
+const socket = io("https://ran.naufaljundi.online", {
   autoConnect: false,
 });
 // langsung connect ke socket server
