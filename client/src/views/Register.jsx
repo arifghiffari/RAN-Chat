@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import url from "../utils/url";
 import Toastify from "toastify-js";
-import { ThemeContext } from '../context/ThemeContext';
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -24,8 +24,8 @@ export default function Register() {
         duration: 3000,
         newWindow: true,
         close: true,
-        gravity: "bottom", 
-        position: "right", 
+        gravity: "bottom",
+        position: "right",
         stopOnFocus: true,
         style: {
           background: "linear-gradient(to right, #FF0000, #FF7637)",
@@ -72,7 +72,15 @@ export default function Register() {
                   <label htmlFor="phase" className="label">
                     <span className="label-text">Phase</span>
                   </label>
-                  <input onChange={(e) => setPhase(e.target.value)} type="text" name="phase" id="phase" placeholder="Enter phase..." required className="input input-bordered" />
+                  <select className="select select-secondary w-full max-w-xs" onChange={(e) => setPhase(e.target.value)}>
+                    <option disabled selected>
+                      Choose Your Phase are you now
+                    </option>
+                    <option value="Phase 0">Phase 0</option>
+                    <option value="Phase 1">Phase 1</option>
+                    <option value="Phase 2">Phase 2</option>
+                    <option value="Phase 3">Phase 3</option>
+                  </select>
                 </div>
                 <div className="form-control mt-6">
                   <button onClick={handleRegister} type="submit" className="btn btn-secondary w-full">
@@ -95,4 +103,3 @@ export default function Register() {
     </div>
   );
 }
-

@@ -5,7 +5,7 @@
     "database": "RAN_Chat",
     "host": "127.0.0.1",
     "dialect": "postgres",
-    "port": 5432
+    "port": 5433
   },
   "test": {
     "username": "postgres",
@@ -13,7 +13,7 @@
     "database": "RAN_Chat-test",
     "host": "127.0.0.1",
     "dialect": "postgres",
-    "port": 5432
+    "port": 5433
   },
   "production": {
     "use_env_variable": "DATABASE_URL"
