@@ -21,10 +21,10 @@ export default function Nav() {
       </div>
 
       <div className="navbar-center">
-        {currentTheme === 'light' ? (
-          <i onClick={() => setCurrentTheme("dark")} className="fa-xl fas fa-moon cursor-pointer"></i>
+        {currentTheme === 'bumblebee' ? (
+          <i onClick={() => setCurrentTheme("halloween")} className="fa-xl fas fa-moon cursor-pointer"></i>
         ) : (
-          <i onClick={() => setCurrentTheme("light")} className="fa-xl fas fa-sun cursor-pointer"></i>
+          <i onClick={() => setCurrentTheme("bumblebee")} className="fa-xl fas fa-sun cursor-pointer"></i>
         )}
       </div>
 
