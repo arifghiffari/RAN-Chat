@@ -20,9 +20,9 @@ export default function Nav() {
         </h1>
       </div>
 
-      <div className="navbar-center">
+      <div className="flex-1">
         {currentTheme === 'bumblebee' ? (
-          <i onClick={() => setCurrentTheme("halloween")} className="fa-xl fas fa-moon cursor-pointer"></i>
+          <i onClick={() => setCurrentTheme("dark")} className="fa-xl fas fa-moon cursor-pointer"></i>
         ) : (
           <i onClick={() => setCurrentTheme("bumblebee")} className="fa-xl fas fa-sun cursor-pointer"></i>
         )}

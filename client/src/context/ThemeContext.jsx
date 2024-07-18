@@ -8,7 +8,7 @@ export const ThemeContext = createContext({
             dataTheme: ""
         },
     
-        halloween:{
+        dark:{
             dataTheme: ""
         }
     }
@@ -26,8 +26,8 @@ export function ThemeProvider({ children }) {
                     dataTheme: "bumblebee"
                 },
             
-                halloween:{
-                    dataTheme: "halloween"
+                dark:{
+                    dataTheme: "dark"
                 }
             }
         }
