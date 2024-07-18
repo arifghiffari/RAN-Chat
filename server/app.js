@@ -14,8 +14,9 @@ const { userJoin, getRoomUsers, getCurrentUser, userLeave } = require("./utils/u
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173"
+        origin: ["http://localhost:5173", "https://ran-chat-nine.vercel.app"]
     }
+
 });
 
 app.use(express.urlencoded({ extended: true }))

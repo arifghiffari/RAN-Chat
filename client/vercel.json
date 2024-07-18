@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/login", "destination": "https://ran-chat-nine.vercel.app/login" }]
+}
