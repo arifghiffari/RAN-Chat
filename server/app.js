@@ -14,7 +14,7 @@ const { userJoin, getRoomUsers, getCurrentUser, userLeave } = require("./utils/u
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "https://ran-chat-git-dev-arifs-projects-4e69b685.vercel.app/"
+        origin: "https://ran-chat-git-dev-arifs-projects-4e69b685.vercel.app"
     }
 
 });
